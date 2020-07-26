@@ -8,16 +8,18 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import sys
 import re
+import os
 # Create your views here.
 
 def index(request):
     sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    wd = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+    wd = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=chrome_options)
     
     browser = wd
     browser.get('https://www.kdmc.gov.in/RtsPortal/CitizenHome.html')
