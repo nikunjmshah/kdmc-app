@@ -12,6 +12,11 @@ import os
 # Create your views here.
 
 def chart(data):
+	data.reverse()
+	data_new = [['Day', 'Cases']]
+	for k in range(0, len(data)):
+		data_new.append([k + 1, data[k]])
+
 	html_page = '''
   <html>
   <head>
@@ -21,16 +26,10 @@ def chart(data):
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses'],
-          ['2004',  1000,      400],
-          ['2005',  1170,      460],
-          ['2006',  660,       1120],
-          ['2007',  1030,      540]
-        ]);
+        var data = google.visualization.arrayToDataTable(''' + str(data_new) + ''');
 
         var options = {
-          title: 'Company Performance',
+          title: 'KDMC Daily cases',
           curveType: 'function',
           legend: { position: 'bottom' }
         };
