@@ -1,3 +1,7 @@
 django
 gunicorn
 django-heroku
+requests
+beautifulsoup4
+selenium
+time
