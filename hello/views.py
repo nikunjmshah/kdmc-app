@@ -110,9 +110,24 @@ def get_data():
 
 def index(request):
 	start = time.time()
+
+	sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
+
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    wd = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=chrome_options)
+    
+    browser = wd
+    browser.get('https://www.kdmc.gov.in/RtsPortal/CitizenHome.html')
+    form_elem = browser.find_element_by_id('frm597')
+    #print(form_elem)
+    form_elem.submit()
 	# response = get_data()
 	end = time.time()
-	return HttpResponse('<pre>' + str('hello') + '</pre>')
+	return HttpResponse('<pre>' + str(end - start) + '</pre>')
 	
 
 
