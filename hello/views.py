@@ -9,6 +9,7 @@ from selenium import webdriver
 import sys
 import re
 import os
+import time
 # Create your views here.
 
 def chart(data):
@@ -31,7 +32,13 @@ def chart(data):
         var options = {
           title: 'KDMC Daily cases',
           curveType: 'function',
-          legend: { position: 'bottom' }
+          legend: { position: 'bottom' },
+          hAxis: {
+          title: 'Cases'
+          },
+          vAxis: {
+          title: 'Day'
+          }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
@@ -49,7 +56,7 @@ def chart(data):
 	'''
 	return(html_page)
 
-def index(request):
+def get_data():
     sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 
     chrome_options = webdriver.ChromeOptions()
@@ -95,12 +102,18 @@ def index(request):
                 #print(patients)
                 patients_list.append(patients)
 
-    r = requests.get('http://httpbin.org/status/418')
+    #r = requests.get('http://httpbin.org/status/418')
     #print("Hello")
     #print(r.text)
     # return HttpResponse('<pre>' + str(patients_list) + '</pre>')
     return HttpResponse(chart(patients_list))
 
+def index(request):
+	start = time.time()
+	response = get_data()
+	end = time.time()
+	return HttpResponse('<pre>' + str(end - start) + '</pre>')
+	
 
 
 def db(request):
