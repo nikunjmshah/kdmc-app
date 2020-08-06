@@ -121,11 +121,11 @@ def index(request):
     wd = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=chrome_options)
     end1 = time.time()
     browser = wd
-    browser.get('https://www.kdmc.gov.in/RtsPortal/CitizenHome.html')
+    browser.get('https://www.google.com/')
     end2 = time.time()
-    form_elem = browser.find_element_by_id('frm597')
+    #form_elem = browser.find_element_by_id('frm597')
     #print(form_elem)
-    form_elem.submit()
+    #form_elem.submit()
 	# response = get_data()
     
     return HttpResponse('<pre>' + str(end2 - end1) + '</pre>')
