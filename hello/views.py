@@ -121,7 +121,7 @@ def index(request):
     wd = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=chrome_options)
     end1 = time.time()
     browser = wd
-    browser.get('https://www.google.com/')
+    browser.get('www.kdmc.gov.in')
     end2 = time.time()
     #form_elem = browser.find_element_by_id('frm597')
     #print(form_elem)
