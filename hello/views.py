@@ -109,9 +109,9 @@ def get_data():
     return HttpResponse(chart(patients_list))
 
 def index(request):
-	start = time.time()
+    start = time.time()
 
-	sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
+    sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -126,8 +126,8 @@ def index(request):
     #print(form_elem)
     form_elem.submit()
 	# response = get_data()
-	end = time.time()
-	return HttpResponse('<pre>' + str(end - start) + '</pre>')
+    end = time.time()
+    return HttpResponse('<pre>' + str(end - start) + '</pre>')
 	
 
 
