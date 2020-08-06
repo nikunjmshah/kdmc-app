@@ -110,9 +110,9 @@ def get_data():
 
 def index(request):
 	start = time.time()
-	response = get_data()
+	# response = get_data()
 	end = time.time()
-	return HttpResponse('<pre>' + str(end - start) + '</pre>')
+	return HttpResponse('<pre>' + str('hello') + '</pre>')
 	
 
 
