@@ -120,8 +120,8 @@ def index(request):
     #form_elem = browser.find_element_by_id('frm597')
     #print(form_elem)
     #form_elem.submit()
-	# response = get_data()
-	end = time.time()
+    # response = get_data()
+    end = time.time()
     
     return HttpResponse('<pre>' + str(end - start) + '</pre>')
 	
