@@ -10,6 +10,7 @@ import sys
 import re
 import os
 import time
+import mechanize
 # Create your views here.
 
 def chart(data):
@@ -110,27 +111,19 @@ def get_data():
 
 def index(request):
     start = time.time()
-
-    sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
-
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    wd = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=chrome_options)
-    end1 = time.time()
-    browser = wd
-    browser.get('https://www.kdmc.gov.in/RtsPortal/CitizenHome.html#')
-    end2 = time.time()
-    r = requests.get('https://www.kdmc.gov.in/RtsPortal/CitizenHome.html#')
-    end3 = time.time()
+    br = mechanize.Browser()
+    br.set_handle_robots(False)
+    br.open('https://www.kdmc.gov.in/RtsPortal/CitizenHome.html#')
+    br.select_form(name='frm597')
+    page = br.submit()
+    
     #form_elem = browser.find_element_by_id('frm597')
     #print(form_elem)
     #form_elem.submit()
 	# response = get_data()
+	end = time.time()
     
-    return HttpResponse('<pre>' + str(end2 - end1) + ';' + str(end3 - end2) + '</pre>')
+    return HttpResponse('<pre>' + str(end - start) + '</pre>')
 	
 
 
