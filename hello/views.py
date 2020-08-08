@@ -64,7 +64,7 @@ def index(request):
     br.select_form(name='frm597')
     page = br.submit()
     
-    soup = BeautifulSoup(out, 'html.parser')
+    soup = BeautifulSoup(page.read(), 'html.parser')
     divs = soup.findAll("table", {"class": "gridtable"})
     patients_list = []
     for div in divs:
