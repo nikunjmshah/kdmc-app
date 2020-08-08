@@ -3,9 +3,7 @@ from django.http import HttpResponse
 
 from .models import Greeting
 
-import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
 import sys
 import re
 import os
@@ -22,6 +20,7 @@ def chart(data):
 	html_page = '''
   <html>
   <head>
+  <h1> KDMC Analysis </h1>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
@@ -50,30 +49,21 @@ def chart(data):
   </head>
   <body>
     <div id="curve_chart" style="width: 900px; height: 500px"></div>
-  </body>
-</html>
+
 
 
 	'''
 	return(html_page)
 
-def get_data():
-    sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    wd = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=chrome_options)
+def index(request):
+    start = time.time()
+    br = mechanize.Browser()
+    br.set_handle_robots(False)
+    br.open('https://www.kdmc.gov.in/RtsPortal/CitizenHome.html#')
+    br.select_form(name='frm597')
+    page = br.submit()
     
-    browser = wd
-    browser.get('https://www.kdmc.gov.in/RtsPortal/CitizenHome.html')
-    form_elem = browser.find_element_by_id('frm597')
-    #print(form_elem)
-    form_elem.submit()
-    out = browser.page_source
-    #print(out)
     soup = BeautifulSoup(out, 'html.parser')
     divs = soup.findAll("table", {"class": "gridtable"})
     patients_list = []
@@ -103,28 +93,11 @@ def get_data():
                 #print(patients)
                 patients_list.append(patients)
 
-    #r = requests.get('http://httpbin.org/status/418')
-    #print("Hello")
-    #print(r.text)
-    # return HttpResponse('<pre>' + str(patients_list) + '</pre>')
-    return HttpResponse(chart(patients_list))
-
-def index(request):
-    start = time.time()
-    br = mechanize.Browser()
-    br.set_handle_robots(False)
-    br.open('https://www.kdmc.gov.in/RtsPortal/CitizenHome.html#')
-    br.select_form(name='frm597')
-    page = br.submit()
-    
-    #form_elem = browser.find_element_by_id('frm597')
-    #print(form_elem)
-    #form_elem.submit()
-    # response = get_data()
+    html_page = chart(patients_list)
     end = time.time()
     
-    return HttpResponse('<pre>' + str(end - start) + '</pre>')
-	
+    return HttpResponse(html_page + '<p>' + str(end - start) + '</p></body</html>')
+
 
 
 def db(request):
